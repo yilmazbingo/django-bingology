@@ -1,1 +1,1 @@
-web:gunicorn bingologyserver.wsgi --log-file-
+web:gunicorn bingologyserver.wsgi --log-file -
