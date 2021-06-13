@@ -6,5 +6,5 @@ from rest_framework.response import Response
 
 @api_view(["GET"])
 def index(request):
-    return Response({"data":"yilmaz"})
+    return Response({"data":"something"})
 
