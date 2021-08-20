@@ -1,9 +1,6 @@
 """
-ASGI config for bingologyserver project.
-
-It exposes the ASGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
+ASGI is the new, asynchronous-friendly standard that will allow your Django site to use asynchronous Python features,
+and asynchronous Django features as they are developed.
 https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/
 """
 

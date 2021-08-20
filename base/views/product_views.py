@@ -10,6 +10,8 @@ from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 @api_view(['GET'])
 def getProducts(request):
+    query_params=request.query_params
+    print("query_params",query_params)
     keyword = request.query_params.get("keyword")
     if keyword==None:
         keyword=""
@@ -18,8 +20,8 @@ def getProducts(request):
     print("products",products)
     # We want to paginate filtered results
     page=request.query_params.get("page")
-    print("pageppppppppp",page)
-    paginator=Paginator(products,3)
+    print("page",page)
+    paginator=Paginator(products,4)
     try:
         products=paginator.page(page)
     # when we first visit the page,there is no query set
@@ -28,8 +30,10 @@ def getProducts(request):
     # if user sends high number
     except EmptyPage:
         products=paginator.page(paginator.num_pages)
-    if page==None:
+    # if page==None:
+    if not page:
         page=1
+    print("page in getProducts",page)
     page=int(page)
     print("pageee",page)
 
@@ -60,9 +64,19 @@ def getProduct(request,pk):
 @permission_classes([IsAdminUser])
 def createProduct(request):
     user=request.user
-    product=Product.objects.create(user=user, name='Sample name',
-                                   price=0,brand='Sample brand',
-                                   countInStock=0,category="sample category",description="")
+    print("user in post",user)
+    print("request.data",request.data)
+    name=request.data['name']
+    price=request.data['price']
+    brand=request.data['brand']
+    countInStock=request.data['countInStock']
+    category=request.data['category']
+    description=request.data['description']
+    image=request.FILES.get('image')
+    product=Product.objects.create(user=user, name=name,
+                                   price=price,brand=brand,
+                                   countInStock=countInStock,category=category,description=description, image=image)
+    product.save()
     serializer=ProductSerializer(product, many=False)
     return Response(serializer.data)
 
@@ -85,6 +99,8 @@ def updateProduct(request,pk):
 @api_view(['POST'])
 def uploadImage(request):
     data=request.data
+    print("request in upload image",data)
+
     product_id=data['product_id']
     product=Product.objects.get(id=product_id)
     product.image=request.FILES.get('image')

@@ -13,6 +13,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECRET_KEY = 'dlfjsadhfdkshfkdsalf223424'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -106,18 +108,18 @@ WSGI_APPLICATION = 'bingologyserver.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER':os.environ.get('DB_USER'),
-        'PASSWORD':os.environ.get('DB_PASSWORD'),
-        'HOST':os.environ.get('DB_HOST'),
-        'PORT':os.environ.get('DB_PORT')
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+# 'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('DB_NAME'),
+#         'USER':os.environ.get('DB_USER'),
+#         'PASSWORD':os.environ.get('DB_PASSWORD'),
+#         'HOST':os.environ.get('DB_HOST'),
+#         'PORT':os.environ.get('DB_PORT')
+#     }
 }
 
 
@@ -172,12 +174,12 @@ STATIC_ROOT =BASE_DIR/'staticfiles'
 
 CORS_ALLOW_ALL_ORIGINS=True
 
-DEFAULT_FILE_STORAGE=  os.environ.get('DEFAULT_FILE_STORAGE')
-
-AWS_ACCESS_KEY_ID=os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY=os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-
+# DEFAULT_FILE_STORAGE=  os.environ.get('DEFAULT_FILE_STORAGE')
+#
+# AWS_ACCESS_KEY_ID=os.environ.get('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY=os.environ.get('AWS_SECRET_ACCESS_KEY')
+# this is not allowed to be read as env. ValueError: Required parameter name not set
+# AWS_STORAGE_BUCKET_NAME = 'bingology'
 # this will let us know that we are on heroku
 if os.getcwd()=='/app':
     DEBUG=False

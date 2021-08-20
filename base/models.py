@@ -1,7 +1,9 @@
+from django.core import validators
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator,MaxValueValidator
 
-
+# p manage.py shell    interactive terminal
 # ForeignKey sets one-to-many
 class Product(models.Model):
     # if user is deleted product would be set to null. so check the ts file in front end
@@ -14,7 +16,8 @@ class Product(models.Model):
     brand=models.CharField(max_length=200,null=True,blank=True)
     category=models.CharField(max_length=200,null=True,blank=True)
     description=models.TextField(null=True,blank=True)
-    rating=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    # rating=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    rating=models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(5)])
     numReviews=models.IntegerField(null=True,blank=True,default=0)
     price=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
     countInStock= models.IntegerField(null=True,blank=True,default=0)
