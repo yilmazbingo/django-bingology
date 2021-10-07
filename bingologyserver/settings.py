@@ -181,12 +181,12 @@ STATIC_ROOT =BASE_DIR/'staticfiles'
 CORS_ALLOW_ALL_ORIGINS=True
 # sond show access key id on query
 AWS_QUERYSTRING_AUTH=False
-# DEFAULT_FILE_STORAGE=  os.environ.get('DEFAULT_FILE_STORAGE')
-#
-# AWS_ACCESS_KEY_ID=os.environ.get('AWS_ACCESS_KEY_ID')
-# AWS_SECRET_ACCESS_KEY=os.environ.get('AWS_SECRET_ACCESS_KEY')
+DEFAULT_FILE_STORAGE=  os.environ.get('DEFAULT_FILE_STORAGE')
+
+AWS_ACCESS_KEY_ID=os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY=os.environ.get('AWS_SECRET_ACCESS_KEY')
 # this is not allowed to be read as env. ValueError: Required parameter name not set
-# AWS_STORAGE_BUCKET_NAME = 'bingology-bucket'
+AWS_STORAGE_BUCKET_NAME = 'bingology-bucket'
 # this will let us know that we are on heroku
 if os.getcwd()=='/app':
     DEBUG=False
