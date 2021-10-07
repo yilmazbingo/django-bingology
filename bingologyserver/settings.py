@@ -13,6 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECRET_KEY = os.environ['SECRET_KEY']
 # SECRET_KEY = 'dlfjsadhfdkshfkdsalf223424'
 
 
@@ -108,18 +109,23 @@ WSGI_APPLICATION = 'bingologyserver.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': "bingology",
+    #     'USER':os.environ.get("DB_USER"),
+    #     'PASSWORD':os.environ.get("POSTGRES_PASSWORD"),
+    #     # right click postresql,properties,connection tab. host is localhost
+    #     "HOST":'localhost',
+    #     'PORT':'5432'
+    # }
+'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER':os.environ.get('DB_USER'),
+        'PASSWORD':os.environ.get('DB_PASSWORD'),
+        'HOST':os.environ.get('DB_HOST'),
+        'PORT':os.environ.get('DB_PORT')
     }
-# 'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('DB_NAME'),
-#         'USER':os.environ.get('DB_USER'),
-#         'PASSWORD':os.environ.get('DB_PASSWORD'),
-#         'HOST':os.environ.get('DB_HOST'),
-#         'PORT':os.environ.get('DB_PORT')
-#     }
 }
 
 
@@ -173,13 +179,14 @@ MEDIA_ROOT =BASE_DIR/'static/images'
 STATIC_ROOT =BASE_DIR/'staticfiles'
 
 CORS_ALLOW_ALL_ORIGINS=True
-
+# sond show access key id on query
+AWS_QUERYSTRING_AUTH=False
 # DEFAULT_FILE_STORAGE=  os.environ.get('DEFAULT_FILE_STORAGE')
 #
 # AWS_ACCESS_KEY_ID=os.environ.get('AWS_ACCESS_KEY_ID')
 # AWS_SECRET_ACCESS_KEY=os.environ.get('AWS_SECRET_ACCESS_KEY')
 # this is not allowed to be read as env. ValueError: Required parameter name not set
-# AWS_STORAGE_BUCKET_NAME = 'bingology'
+# AWS_STORAGE_BUCKET_NAME = 'bingology-bucket'
 # this will let us know that we are on heroku
 if os.getcwd()=='/app':
     DEBUG=False
