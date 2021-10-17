@@ -12,9 +12,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
-# SECRET_KEY = os.environ['SECRET_KEY']
-# SECRET_KEY = 'dlfjsadhfdkshfkdsalf223424'
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+
+SECRET_KEY = 'dlfjsadhfdkshfkdsalf223424'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -22,8 +22,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1","localhost","django-bingology.herokuapp.com"]
 
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -112,12 +110,13 @@ DATABASES = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql',
     #     'NAME': "bingology",
-    #     'USER':os.environ.get("DB_USER"),
+    #     'USER':"postgres",
     #     'PASSWORD':os.environ.get("POSTGRES_PASSWORD"),
+    #     'PASSWORD':"yilmaz2707",
     #     # right click postresql,properties,connection tab. host is localhost
     #     "HOST":'localhost',
     #     'PORT':'5432'
-    # }
+    # },
 'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('DB_NAME'),
@@ -185,7 +184,7 @@ DEFAULT_FILE_STORAGE=  os.environ.get('DEFAULT_FILE_STORAGE')
 
 AWS_ACCESS_KEY_ID=os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY=os.environ.get('AWS_SECRET_ACCESS_KEY')
-# this is not allowed to be read as env. ValueError: Required parameter name not set
+# # this is not allowed to be read as env. ValueError: Required parameter name not set
 AWS_STORAGE_BUCKET_NAME = 'bingology-bucket'
 # this will let us know that we are on heroku
 if os.getcwd()=='/app':

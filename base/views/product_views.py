@@ -2,25 +2,25 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework.response import Response
-# from base.products import products
 from base.models import Product, Review
 from base.serializers import ProductSerializer
 from rest_framework import status
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+import boto3
+from boto3.s3.transfer import TransferConfig
+import os
 
 @api_view(['GET'])
 def getProducts(request):
     query_params=request.query_params
-    print("query_params",query_params)
+
     keyword = request.query_params.get("keyword")
     if keyword==None:
         keyword=""
     print("query",request.query_params.get("keyword"))
-    products=Product.objects.filter(name__icontains=keyword)
-    print("products",products)
+    products=Product.objects.filter(name__icontains=keyword).order_by('-createdAt')
     # We want to paginate filtered results
     page=request.query_params.get("page")
-    print("page",page)
     paginator=Paginator(products,4)
     try:
         products=paginator.page(page)
@@ -72,7 +72,8 @@ def createProduct(request):
     countInStock=request.data['countInStock']
     category=request.data['category']
     description=request.data['description']
-    image=request.FILES.get('image')
+    image=request.data['image']
+    print("image",image)
     product=Product.objects.create(user=user, name=name,
                                    price=price,brand=brand,
                                    countInStock=countInStock,category=category,description=description, image=image)
@@ -96,6 +97,7 @@ def updateProduct(request,pk):
     serializer=ProductSerializer(product,many=False)
     return Response(serializer.data)
 
+# this is for put request
 @api_view(['POST'])
 def uploadImage(request):
     data=request.data
@@ -106,6 +108,43 @@ def uploadImage(request):
     product.image=request.FILES.get('image')
     product.save()
     return Response('Image was uploaded')
+
+@api_view(['POST'])
+def upload(request):
+    data=request.FILES.get("image")
+    GB = 1024 ** 3
+    config = TransferConfig(multipart_threshold=5 * GB)
+
+
+    client=boto3.client("s3",
+                        aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
+                        aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'),
+                        # s3 does not need region
+                        # region_name=os.environ.get(AWS_REGION_NAME),
+                        )
+
+
+    response = client.put_object(Body=data,Bucket="bingology-bucket",Key="testing",ContentType="image/jpeg"
+
+        # {
+        #     'Bucket': "bingology-bucket",
+        #     'Key': "testing",
+        #     'ACL': 'public-read',
+        #     # I set it as image/jpeg when cropped the image
+        #     'ContentType': "image/jpeg"
+        # },
+    )
+    # response = client.generate_presigned_url(
+    #     'put_object',
+    #     {
+    #         'Bucket': "bingology-bucket",
+    #         'Key': "testing",
+    #         'ACL': 'public-read',
+    # 'ContentType': "image/jpeg"
+    # },
+    # )
+    print("response",response)
+    return Response(response)
 
 
 # @api_view(['DELETE'])
@@ -128,7 +167,6 @@ def deleteProduct(request, pk):
 @api_view(['POST'])
 @permission_classes({IsAuthenticated})
 def createProductReview(request,pk):
-    print("i got the request")
     user=request.user
     product=Product.objects.get(id=pk)
     data=request.data

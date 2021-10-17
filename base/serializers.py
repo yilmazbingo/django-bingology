@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Product, Order, OrderItem, ShippingAddress, Review
 
-# we are creating serializer class. we use this in views
+
 class UserSerializer(serializers.ModelSerializer):
     name=serializers.SerializerMethodField(read_only=True)
     isAdmin=serializers.SerializerMethodField(read_only=True)
@@ -18,10 +18,11 @@ class UserSerializer(serializers.ModelSerializer):
         if name =='':
             name=obj.email
         return name
+    # instead of is_staff, I want to change it to isAdmin
     def get_isAdmin(self,obj):
         return obj.is_staff
 
-
+# we use this when user first registers or sets its account
 class UserSerializerWithToken(UserSerializer):
     token=serializers.SerializerMethodField(read_only=True)
     class Meta:

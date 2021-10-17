@@ -27,27 +27,22 @@ class MyTokenObtainPairView(TokenObtainPairView):
 @api_view(['POST'])
 def registerUser(request):
     data=request.data
-    print("register data", data)
-    # try:
-    print(data['name'])
-    print(data['email'])
-    print(make_password(data['password']))
-    user = User.objects.create(
-        first_name=data['name'],
-        username=data['email'],
-        email=data['email'],
-        password=make_password(data['password'])
-    )
-    print("userrrrrrr",user)
-        # when we register a user, we want to return token right away
-        # serializer=UserSerializerWithToken(user, many=False)
-        # dont login the user
-    message={"detail":"Successfully registered"}
-    # return Response(serializer.data)
-    return Response(message)
-    # except:
-    #     message={'detail':"User with this email already exists"}
-    #     return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user = User.objects.create(
+            first_name=data['name'],
+            username=data['email'],
+            email=data['email'],
+            password=make_password(data['password'])
+        )
+
+            # when we register a user, we want to return token right away
+        serializer=UserSerializerWithToken(user, many=False)
+            # dont login the user
+        return Response(serializer.data)
+    except:
+        message={'detail':"User with this email already exists"}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def updateUserProfile(request):
