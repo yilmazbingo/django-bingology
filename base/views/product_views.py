@@ -16,10 +16,11 @@ def getProducts(request):
 
     keyword = request.query_params.get("keyword")
     if keyword==None:
-        keyword=""
+        keyword=" "
     print("query",request.query_params.get("keyword"))
     products=Product.objects.filter(name__icontains=keyword).order_by('-createdAt')
     # We want to paginate filtered results
+    print("products",products)
     page=request.query_params.get("page")
     paginator=Paginator(products,4)
     try:
@@ -34,7 +35,7 @@ def getProducts(request):
     if not page:
         page=1
     print("page in getProducts",page)
-    page=int(page)
+    # page=int(page)
     print("pageee",page)
 
     # this data has to be serialized before turned back to front end. it worked fine with django, but now we use drf
