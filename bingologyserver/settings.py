@@ -20,7 +20,7 @@ SECRET_KEY = 'dlfjsadhfdkshfkdsalf223424'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1","localhost","django-bingology.herokuapp.com"]
+ALLOWED_HOSTS = ["127.0.0.1","localhost","django-bingology.onrender.com"]
 
 
 INSTALLED_APPS = [
